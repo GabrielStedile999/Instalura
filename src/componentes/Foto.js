@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {Link} from 'react-router';
+import Pubsub from 'pubsub-js';
 
 class FotoAtualizacoes extends Component {
 
@@ -23,6 +24,7 @@ class FotoAtualizacoes extends Component {
             })
             .then(liker => {
                 this.setState({likeada: !this.state.likeada});
+                Pubsub.publish('atualiza-liker',{fotoId:this.props.foto.id, liker});
             });
     }
 
@@ -41,12 +43,33 @@ class FotoAtualizacoes extends Component {
 }
 
 class FotoInfo extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {likers:this.props.foto.likers};
+    }
+
+    componentWillMount(){
+        Pubsub.subscribe('atualiza-liker',(topico,infoliker) => {
+            if(this.props.foto.id === infoliker.fotoId) {
+                const possivelLiker = this.state.likers.find(liker => liker.login === infoliker.liker.login);
+                if(possivelLiker === undefined) {
+                    const novosLikers = this.state.likers.concat(infoliker.liker);
+                    this.setState({likers:novosLikers});
+                } else {
+                    const novosLikers = this.state.likers.filter(liker => liker.login !== infoliker.liker.login);
+                    this.setState({likers:novosLikers});
+                }
+            }
+        });
+    }
+
     render(){
         return (
             <div className="foto-in fo">
               <div className="foto-info-likes">
                 {
-                  this.props.foto.likers.map(liker => {
+                  this.props.state.likers.map(liker => {
                     return (<Link key={liker.login} href={`/timeline/${liker.login}`}>{liker.login},</Link>)
                   })
                 }
