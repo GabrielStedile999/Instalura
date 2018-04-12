@@ -13,7 +13,7 @@ export default class Timeline extends Component {
 
     componentWillMount() {
         this.props.store.subscribe(() => {
-           this.setState({fotos:this.store.getState()});
+           this.setState({fotos:this.props.store.getState()});
         });
     }
 
@@ -26,8 +26,7 @@ export default class Timeline extends Component {
         urlPerfil = `http://localhost:8080/api/public/fotos/${this.login}`;
       }
 
-
-      TimelineApi.lista(urlPerfil,this.props.store);
+      this.props.store.dispatch(TimelineApi.lista(urlPerfil));
     }
 
     componentDidMount(){
@@ -42,11 +41,11 @@ export default class Timeline extends Component {
     }
 
     like(fotoId) {
-        this.props.store.like(fotoId);
+        this.props.store.dispatch(TimelineApi.like(fotoId));
     }
 
     comenta(fotoId,textoComentario) {
-        this.props.store.comenta(fotoId,textoComentario);
+        this.props.store.dispatch(TimelineApi.comenta(fotoId,textoComentario));
     }
 
     render(){
