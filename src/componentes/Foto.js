@@ -16,13 +16,13 @@ class FotoAtualizacoes extends Component {
     render(){
         return (
             <section className="fotoAtualizacoes">
-              <a onClick={this.like.bind(this)} href="#" className={this.props.foto.likeada ? 'fotoAtualizacoes-like-ativo' : 'fotoAtualizacoes-like'}>Likar</a>
+              <a onClick={this.like.bind(this)} className={this.props.foto.likeada ? 'fotoAtualizacoes-like-ativo' : 'fotoAtualizacoes-like'}>Likar</a>
               <form className="fotoAtualizacoes-form" onSubmit={this.comenta.bind(this)}>
                 <input type="text" placeholder="Adicione um comentário..." className="fotoAtualizacoes-form-campo" ref={input => this.comentario = input}/>
                 <input type="submit" value="Comentar!" className="fotoAtualizacoes-form-submit"/>
               </form>
 
-            </section>            
+            </section>
         );
     }
 }
@@ -37,9 +37,9 @@ class FotoInfo extends Component {
                     return (<Link key={liker.login} href={`/timeline/${liker.login}`}>{liker.login},</Link>)
                   })
                 }
-                 
+
                  curtiram
-             
+
               </div>
 
               <p className="foto-info-legenda">
@@ -59,7 +59,7 @@ class FotoInfo extends Component {
                   })
                 }
               </ul>
-            </div>            
+            </div>
         );
     }
 }
@@ -73,11 +73,11 @@ class FotoHeader extends Component {
                 <figcaption className="foto-usuario">
                   <Link to={`/timeline/${this.props.foto.loginUsuario}`}>
                     {this.props.foto.loginUsuario}
-                  </Link>  
+                  </Link>
                 </figcaption>
               </figure>
               <time className="foto-data">{this.props.foto.horario}</time>
-            </header>            
+            </header>
         );
     }
 }
@@ -90,7 +90,7 @@ export default class FotoItem extends Component {
             <img alt="foto" className="foto-src" src={this.props.foto.urlFoto}/>
             <FotoInfo foto={this.props.foto}/>
             <FotoAtualizacoes {...this.props}/>
-          </div>            
+          </div>
         );
     }
 }
